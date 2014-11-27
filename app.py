@@ -2,17 +2,17 @@ import os
 import urllib
 import urllib2
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
 
 titles = [
     {
-        'id':1,
-        'number': 'CS72510',
-        'reference': '2345678', 
-        'done': False
+        'reference': 2345678,
+        'titleNumber': 'CS72510',
+        'complete': False
     }
+    
 ]
 
 
@@ -20,13 +20,11 @@ titles = [
 def index():
   return render_template('coraEmulator.html')
   
-  
 @app.route('/test/')
 def test():
   print 'I test got clicked!'
   return render_template('error.html')
   
-
 @app.route('/JPLquery/')
 def JPLquery():
   print 'I got clicked!'
@@ -36,9 +34,21 @@ def JPLquery():
   print resp
   return render_template('restrictionQuery.html')
   
-@app.route('/todo/api/v1.0/titles', methods=['GET'])
-def get_tasks():
-    return jsonify({'titles': titles})
+@app.route('/todo/api/v1.0/titles/complete/<int:reference_id>', methods=['PUT'])
+def update_title(reference_id):
+    print reference_id
+    title = filter(lambda t: t['reference'] == reference_id, titles)
+    if len(title) == 0:
+        abort(404)
+        
+    if not request.json:
+        abort(400)
+
+    title[0]['titleNumber'] = request.json.get('titleNumber', title[0]['titleNumber'])
+    title[0]['complete'] = request.json.get('complete', title[0]['complete'])
+
+    return jsonify({'title': title[0]})
+    
     
 @app.errorhandler(500)
 def internal_error(error):
