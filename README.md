@@ -1,4 +1,4 @@
-#team_black_jpl_microservice
+#team_black_casework
 
 ##what is it?
 Contains the web services and database/stubs to store, validate and process joint proprietor letter requests.  
