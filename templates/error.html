@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>CORA Emulator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="{{ url_for('static', filename='img/Portal.ico') }}" type="image/x-icon" />
+        <!-- Bootstrap -->
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+        <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
+    </head>
+     <body>
+        <div class ="container">
+            <div class="hero-unit">
+                <h1>ERROR {{ error }}</h1>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <h1>ERROR {{ error }} - Restriction Applied</h1>
+                    <h2>JPL query has not been sent to customer</h2>
+                </div>    
+                <div class="span1">
+                    <p><a class="btn btn-primary btn-large" href="/">Close</a></p>
+                </div>
+            </div>
+        </div>
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    </body>
+</html>
