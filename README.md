@@ -1,7 +1,7 @@
 #team_black_casework
 
 ##what is it?
-Contains the web services and database/stubs to store, validate and process joint proprietor letter requests.  
+Contains the web service to simulate a casework system.  
 This service is completely faked, mocked etc.
 
 ##dependencies
