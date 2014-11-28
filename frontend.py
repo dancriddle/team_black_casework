@@ -18,6 +18,7 @@ def add_restriction():
     return render_template("restriction_added.html", referencenumber=referencenumber, title_number=TITLE_NUMBER)
 
 @app.route('/titlefromreference', methods=['POST'])
+#takes a reference number and returns the title number associated to it.
 def title_from_reference():
     if not request.json or not 'reference' in request.json:
         abort(400)

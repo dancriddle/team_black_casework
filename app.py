@@ -1,6 +1,8 @@
 import os
 import urllib
 import urllib2
+from letter import generate_letter
+
 
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
@@ -18,7 +20,8 @@ titles = [
 
 @app.route('/')
 def index():
-  return render_template('coraEmulator.html')
+  titlenumber = titles[0]['titleNumber']
+  return render_template('coraEmulator.html', titlenumber=titlenumber)
   
 @app.route('/test/')
 def test():
@@ -28,13 +31,21 @@ def test():
 @app.route('/JPLquery/')
 def JPLquery():
   print 'I got clicked!'
- # url = "https://testrestfulapi-srallis1.c9.io/todo/api/v1.0/tasks/1"
   url= "https://team-black-email-service-dancriddle.c9.io/sendmail"
-  
-  values = {'name'   : 'Michael Foord',
-            'email'  : 'JPLService00@gmail.com',
-            'subject': 'JPL Query',
-            'body'   : 'Main email text goes here' }
+
+  title_number = titles[0]['titleNumber']
+  reference_number = str(titles[0]['reference'])
+
+  convenyancer_name = 'Michael Foord'
+  convenyancer_email = 'JPLService00@gmail.com'
+  message_subject = 'You have a Joint Proprietor notification'
+  message_content = generate_letter(reference_number, convenyancer_name, title_number)
+
+
+  values = {'name'   : convenyancer_name,
+            'email'  : convenyancer_email,
+            'subject': message_subject,
+            'body'   : message_content }
 
   data = urllib.urlencode(values)
   
@@ -86,4 +97,4 @@ def not_found(error):
     return render_template('error.html',error='404')
 
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
+    app.run(debug=True, host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
