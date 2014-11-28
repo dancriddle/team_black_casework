@@ -28,13 +28,38 @@ def test():
 @app.route('/JPLquery/')
 def JPLquery():
   print 'I got clicked!'
-  url = "https://testrestfulapi-srallis1.c9.io/todo/api/v1.0/tasks/1"
-  req = urllib2.Request(url)
-  resp = urllib2.urlopen(req).read()
-  print resp
+ # url = "https://testrestfulapi-srallis1.c9.io/todo/api/v1.0/tasks/1"
+  url= "https://team-black-email-service-dancriddle.c9.io/sendmail"
+  
+  values = {'name'   : 'Michael Foord',
+            'email'  : 'JPLService00@gmail.com',
+            'subject': 'JPL Query',
+            'body'   : 'Main email text goes here' }
+
+  data = urllib.urlencode(values)
+  
+  req = urllib2.urlopen(url, data)
+  #resp = urllib2.urlopen(req).read()
+  #print resp
   return render_template('restrictionQuery.html')
   
-@app.route('/todo/api/v1.0/titles/complete/<int:reference_id>', methods=['PUT'])
+@app.route('/titlefromreference', methods=['POST'])
+def title_from_reference():
+    
+    print "Got here form referance"
+    
+    title = filter(lambda t: t['reference'] == int(request.json.get('reference')), titles)
+    if not request.json or not 'reference' in request.json:
+        abort(400)
+        
+    if (len(title) == 0):
+        data = "Referance not valid"
+    else:
+        data = title[0]['titleNumber']
+
+    return data
+  
+@app.route('/complete/<int:reference_id>', methods=['PUT'])
 def update_title(reference_id):
     print reference_id
     title = filter(lambda t: t['reference'] == reference_id, titles)
