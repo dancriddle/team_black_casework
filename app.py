@@ -6,6 +6,7 @@ from letter import generate_letter
 
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
+app.config.from_object('config')
 
 
 titles = [
@@ -31,7 +32,10 @@ def test():
 @app.route('/JPLquery/')
 def JPLquery():
   print 'I got clicked!'
-  url= "https://team-black-email-service-dancriddle.c9.io/sendmail"
+  # url= "https://team-black-email-service-dancriddle.c9.io/sendmail"
+  url = '%s/sendmail' % app.config['EMAIL_SERVICE']
+
+  app.logger.info(url)
 
   title_number = titles[0]['titleNumber']
   reference_number = str(titles[0]['reference'])
