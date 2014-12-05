@@ -12,10 +12,11 @@ Jinja
 Install by running pip install -r requirements.txt
 
 ##config.py
-create a config.py when you run the application.  It needs a key to know where the casework service is.  e.g.
+create a config.py when you run the application.  It needs a key to know where the email and JPL service is.  e.g.
 
 ```
 EMAIL_SERVICE = 'https://0.0.0.0:5011'
+JPL_SERVICE = 'https://0.0.0.0:5012'
 ```
 or
 
