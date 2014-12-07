@@ -6,6 +6,7 @@ import json
 
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
+app.config.from_object('config')
 
 
 titles = [
@@ -41,7 +42,6 @@ def index():
                             complete1=complete1,titlenumber2=titlenumber2, complete2=complete2) 
   
 
-
 @app.route('/restriction/<int:index>', methods=['GET'])
 def restriction(index):
     titlenumber=titles[index]['titleNumber']
@@ -50,7 +50,9 @@ def restriction(index):
 @app.route('/JPLquery/<int:index>', methods=['GET'])
 def JPLquery(index):
 
-  url= "https://team-black-email-service-dancriddle.c9.io/sendmail"
+  url = '%s/sendmail' % app.config['EMAIL_SERVICE']
+
+  app.logger.info(url)
 
   title_number = titles[index]['titleNumber']
   reference_number = str(titles[index]['reference'])

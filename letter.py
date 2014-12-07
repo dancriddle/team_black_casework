@@ -1,3 +1,9 @@
+from flask import Flask
+app = Flask(__name__)
+app.config.from_object('config')
+
+jplAddress = app.config['JPL_SERVICE']
+
 def generate_letter(reference, name, titleNo):
 
     return """<!DOCTYPE html>
@@ -21,7 +27,7 @@ def generate_letter(reference, name, titleNo):
                             <h2>Somewhere Local Office</h2>
                         </td>
                         <td>
-                            <h2>Online response: www.gov.uk/restriction-response</h2>
+                            <h2>Online response: <a href = """ + jplAddress + """>www.gov.uk/restriction-response</a></h2>
                             <h2>Reference: """ + reference +  """</h2>
                             <h2>Title Number: """ + titleNo +  """</h2>
                             <p>
