@@ -2,7 +2,7 @@ import os
 import urllib
 import urllib2
 from letter import generate_letter
-
+import json
 
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
@@ -10,31 +10,50 @@ app = Flask(__name__)
 
 titles = [
     {
+        'reference': 1234567,
+        'titleNumber': 'CS99999',
+        'complete': False
+    },
+    {
         'reference': 2345678,
         'titleNumber': 'CS72510',
+        'complete': False
+    },
+    {
+        'reference': 3456789,
+        'titleNumber': 'CS88888',
         'complete': False
     }
     
 ]
 
-
 @app.route('/')
 def index():
-  titlenumber = titles[0]['titleNumber']
-  return render_template('coraEmulator.html', titlenumber=titlenumber)
+    #This is a rubish way of doing this, but will have to do for the demo.
+    titlenumber = titles[0]['titleNumber']
+    titlenumber1 = titles[1]['titleNumber']
+    titlenumber2 = titles[2]['titleNumber']
+    complete = titles[0]['complete']
+    complete1 = titles[1]['complete']
+    complete2 = titles[2]['complete']
+    
+    return render_template('index.html',  titlenumber=titlenumber, complete=complete,titlenumber1=titlenumber1, 
+                            complete1=complete1,titlenumber2=titlenumber2, complete2=complete2) 
   
-@app.route('/test/')
-def test():
-  print 'I test got clicked!'
-  return render_template('error.html')
-  
-@app.route('/JPLquery/')
-def JPLquery():
-  print 'I got clicked!'
+
+
+@app.route('/restriction/<int:index>', methods=['GET'])
+def restriction(index):
+    titlenumber=titles[index]['titleNumber']
+    return render_template('coraEmulator.html',titlenumber=titlenumber,index=index)
+    
+@app.route('/JPLquery/<int:index>', methods=['GET'])
+def JPLquery(index):
+
   url= "https://team-black-email-service-dancriddle.c9.io/sendmail"
 
-  title_number = titles[0]['titleNumber']
-  reference_number = str(titles[0]['reference'])
+  title_number = titles[index]['titleNumber']
+  reference_number = str(titles[index]['reference'])
 
   convenyancer_name = 'Michael Foord'
   convenyancer_email = 'JPLService00@gmail.com'
@@ -46,6 +65,8 @@ def JPLquery():
             'email'  : convenyancer_email,
             'subject': message_subject,
             'body'   : message_content }
+            
+  print values
 
   data = urllib.urlencode(values)
   
@@ -53,6 +74,13 @@ def JPLquery():
   #resp = urllib2.urlopen(req).read()
   #print resp
   return render_template('restrictionQuery.html')
+
+    
+@app.route('/test/')
+def test():
+  print 'I test got clicked!'
+  return render_template('error.html')
+  
   
 @app.route('/titlefromreference', methods=['POST'])
 def title_from_reference():
@@ -69,7 +97,9 @@ def title_from_reference():
         data = title[0]['titleNumber']
 
     return data
-  
+    
+
+    
 @app.route('/complete/<int:reference_id>', methods=['PUT'])
 def update_title(reference_id):
     print reference_id
@@ -95,6 +125,7 @@ def internal_error(error):
 def not_found(error):
     print "Error 404"
     return render_template('error.html',error='404')
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
