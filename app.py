@@ -30,7 +30,7 @@ titles = [
 
 @app.route('/')
 def index():
-    #This is a rubish way of doing this, but will have to do for the demo.
+    #This is a poor way of doing this, but will have to do for the demo.
     titlenumber = titles[0]['titleNumber']
     titlenumber1 = titles[1]['titleNumber']
     titlenumber2 = titles[2]['titleNumber']
@@ -102,10 +102,10 @@ def title_from_reference():
     
 
     
-@app.route('/complete/<int:reference_id>', methods=['PUT'])
-def update_title(reference_id):
-    print reference_id
-    title = filter(lambda t: t['reference'] == reference_id, titles)
+@app.route('/complete', methods=['POST'])
+def update_title():
+    print 'got here from complete'
+    title = filter(lambda t: t['reference'] == int(request.json.get('reference')), titles)
     if len(title) == 0:
         abort(404)
         
@@ -113,10 +113,10 @@ def update_title(reference_id):
         abort(400)
 
     title[0]['titleNumber'] = request.json.get('titleNumber', title[0]['titleNumber'])
-    title[0]['complete'] = request.json.get('complete', title[0]['complete'])
-
-    return jsonify({'title': title[0]})
-    
+    title[0]['complete'] = True
+    jsonify({'title': title[0]})
+    print title
+    return "True"
     
 @app.errorhandler(500)
 def internal_error(error):
