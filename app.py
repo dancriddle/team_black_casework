@@ -13,17 +13,20 @@ titles = [
     {
         'reference': 1234567,
         'titleNumber': 'CS99999',
-        'complete': False
+        'complete': False,
+	'customer': 'Michael Foord'
     },
     {
         'reference': 2345678,
         'titleNumber': 'CS72510',
-        'complete': False
+        'complete': False,
+	'customer': 'Dan North'
     },
     {
         'reference': 3456789,
         'titleNumber': 'CS88888',
-        'complete': False
+        'complete': False,
+	'customer': 'James Gosling'
     }
     
 ]
@@ -61,8 +64,8 @@ def JPLquery(index):
   # Construct and send email
   title_number = titles[index]['titleNumber']
   reference_number = str(titles[index]['reference'])
+  convenyancer_name = titles[index]['customer']
 
-  convenyancer_name = 'Michael Foord'
   convenyancer_email = 'JPLService00@gmail.com'
   message_subject = 'You have a Joint Proprietor notification'
   message_content = generate_letter(reference_number, convenyancer_name, title_number)
