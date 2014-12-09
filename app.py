@@ -54,6 +54,11 @@ def JPLquery(index):
 
   app.logger.info(url)
 
+  # These two lines to set status of title to 'In Progress'
+  titles[index]['complete'] = 'In Progress'
+  #jsonify({'title': title[index]})
+
+  # Construct and send email
   title_number = titles[index]['titleNumber']
   reference_number = str(titles[index]['reference'])
 
@@ -130,4 +135,4 @@ def not_found(error):
     
 
 if __name__ == '__main__':
-    app.run(debug=True, host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
+    app.run(debug=True, host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 5010)))
